@@ -45,7 +45,7 @@ const displayBreaks = async () => {
     const breaksTableBody = document.createElement('tbody');
 
     const breaks = await fetchBreaks();
-    const data: string[] = breaks.slice(1);
+    const data: string[] = breaks.slice(0);
 
     const oldTbody = breaksTable.querySelector('tbody');
     if (oldTbody) {
@@ -71,7 +71,7 @@ const displayBreaks = async () => {
         const deleteButton : any = document.createElement('button');
         deleteButton.textContent = 'X';
         deleteButton.addEventListener('mouseup', () => {
-            removeBreak(index);
+            removeBreak(index + 1);
         });
         cell5.appendChild(deleteButton);
 

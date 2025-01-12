@@ -51,7 +51,7 @@ const displayBreaks = () => __awaiter(void 0, void 0, void 0, function* () {
     const breaksTable = document.getElementById('breaksTable');
     const breaksTableBody = document.createElement('tbody');
     const breaks = yield fetchBreaks();
-    const data = breaks.slice(1);
+    const data = breaks.slice(0);
     const oldTbody = breaksTable.querySelector('tbody');
     if (oldTbody) {
         breaksTable.removeChild(oldTbody);
@@ -70,7 +70,7 @@ const displayBreaks = () => __awaiter(void 0, void 0, void 0, function* () {
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'X';
         deleteButton.addEventListener('mouseup', () => {
-            removeBreak(index);
+            removeBreak(index + 1);
         });
         cell5.appendChild(deleteButton);
         row.appendChild(cell1);
