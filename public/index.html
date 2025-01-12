@@ -9,6 +9,35 @@
 <body>
     <h1>Break Tracker</h1>
     <div id="app"></div>
+
+    <div>
+        <form id="break-form">
+            <label for"repInitial">Initial</label><br>
+            <input type="text" id="repInitial" name="repInitial"><br>
+            <label for"firstTen">First 10</label><br>
+            <input type="datetime-local" id="firstTen" name="firstTen"><br>
+            <label for"thirty">Thrity</label><br>
+            <input type="datetime-local" id="thirty" name="thirty"><br>
+            <label for"secondTen">Second 10</label><br>
+            <input type="datetime-local" id="secondTen" name="secondTen"><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div
+    
+    <div>
+        <table id="breaksTable">
+            <thead>
+                <tr>
+                    <th>CX Rep</th>
+                    <th>First 10</th>
+                    <th>Thirty</th>
+                    <th>Second 10</th>
+                </tr>
+            </thead>
+        </table>
+
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

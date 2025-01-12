@@ -10,13 +10,23 @@ const getBreaks = async (req, res) => {
 };
 
 const addBreak = async (req, res) => {
-    const { startTime, endTime } = req.body;
+    const { initial, firstTen, thirty, secondTen } = req.body;
     try {
-        await excelService.addBreak(startTime, endTime);
+        await excelService.addBreak(initial, firstTen, thirty, secondTen);
         res.status(201).send('Break added');
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
 
-module.exports = { getBreaks, addBreak };
+const removeBreak = async (req, res) => {
+    const {rowNumber} = req.body;
+    try {
+        await excelService.removeBreak(rowNumber);
+        res.status(200).send('Break deleted');
+    } catch (error) {
+        res.status(500).json({error: error.message});
+    }
+}
+
+module.exports = { getBreaks, addBreak, removeBreak };

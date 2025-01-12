@@ -14,12 +14,20 @@ const readBreaks = async () => {
     return breaks;
 };
 
-const addBreak = async (startTime, endTime) => {
+const addBreak = async (initial, firstTen, thirty, secondTen) => {
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.readFile(filePath);
     const worksheet = workbook.getWorksheet('Sheet1');
-    worksheet.addRow([startTime, endTime]);
+    worksheet.addRow([initial, firstTen, thirty, secondTen]);
     await workbook.xlsx.writeFile(filePath);
 };
 
-module.exports = { readBreaks, addBreak };
+const removeBreak = async (rowNumber) => {
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.readFile(filePath);
+    const worksheet = workbook.getWorksheet('Sheet1');
+    worksheet.spliceRows(rowNumber, 1);
+    await workbook.xlsx.writeFile(filePath);
+};
+
+module.exports = { readBreaks, addBreak, removeBreak };
