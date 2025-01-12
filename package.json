@@ -1,0 +1,26 @@
+{
+  "name": "breaktrackerdemo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://adynsydeeznuts@github.com/adynsydeeznuts/BreakTrackerDemo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adynsydeeznuts/BreakTrackerDemo/issues"
+  },
+  "homepage": "https://github.com/adynsydeeznuts/BreakTrackerDemo#readme",
+  "dependencies": {
+    "axios": "^1.7.9",
+    "exceljs": "^4.4.0",
+    "express": "^4.21.2",
+    "typescript": "^5.7.3"
+  }
+}
