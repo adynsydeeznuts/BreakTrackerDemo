@@ -1,0 +1,78 @@
+#breaksTableContainer {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 1vh;
+    height: 50vh;
+    background-color: grey;
+    border-radius: 30px;
+    overflow: hidden;
+    padding: 1vh;
+}
+
+#breaksTable {
+    width: 90%;
+    border-collapse: collapse;
+    border-spacing: 0; 
+    text-align: center;
+}
+
+#breaksTable thead {
+    display: table-row-group;
+    width: 100%;
+    border-bottom: 2px solid #ccc;
+}
+
+#breaksTable tbody {
+    display: table-row-group;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+#breaksTable tr {
+    height: auto;
+    align-items: flex-start;
+
+}
+
+#breaksTable th, #breaksTable td {
+    text-align: center;
+    padding: 0px;
+}
+
+#breakFormContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1vh;
+}
+
+#breakForm {
+    margin: auto;
+    padding: 1vh;
+    padding-left: 2vw;
+    padding-right: 2vw;
+    text-align: center;
+    width: 100%;
+    height: 35vh;
+    background-color: grey;
+    border-radius: 30px;
+}
+
+#formHeading {
+    font-size: 25px;
+}
+
+.formLabel {
+    font-size: 2.1vh;
+}
+
+.labelBorderFix {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.setWidth {
+    width: 6vw;
+}
+

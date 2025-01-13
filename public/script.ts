@@ -87,6 +87,7 @@ const displayBreaks = async () => {
     breaksTable?.appendChild(breaksTableBody);
 }
 
-document.addEventListener('DOMContentLoaded', displayBreaks);
-
-document.getElementById('break-form')?.addEventListener('submit', addBreak);
+document.addEventListener('DOMContentLoaded', () => {
+    displayBreaks();
+    document.getElementById('breakForm')?.addEventListener('submit', addBreak);
+});

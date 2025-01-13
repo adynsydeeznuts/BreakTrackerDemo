@@ -8,7 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var _a;
 const fetchBreaks = () => __awaiter(void 0, void 0, void 0, function* () {
     const response = yield fetch('/api/breaks');
     const breaks = yield response.json();
@@ -82,5 +81,8 @@ const displayBreaks = () => __awaiter(void 0, void 0, void 0, function* () {
     });
     breaksTable === null || breaksTable === void 0 ? void 0 : breaksTable.appendChild(breaksTableBody);
 });
-document.addEventListener('DOMContentLoaded', displayBreaks);
-(_a = document.getElementById('break-form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', addBreak);
+document.addEventListener('DOMContentLoaded', () => {
+    var _a;
+    displayBreaks();
+    (_a = document.getElementById('breakForm')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', addBreak);
+});
