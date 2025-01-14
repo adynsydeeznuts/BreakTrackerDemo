@@ -12,72 +12,81 @@
 
     <div class="container-fluid">
         <div class="row">
+            <!-- Left Section: Form and Table -->
             <div class="col-md-4">
-                <div class="row">
-                    <div class="col" id="breakFormContainer">
-                        <form id="breakForm">
-                            <div id="formHeading">Enter Shift</div>
-                                <div class="row">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend setWidth">
-                                            <span class="input-group-text labelBorderFix" id="basic-addon1">Initial</span>
-                                        </div>
-                                        <input id="repInitial" type="text" class="form-control">
-                                    </div>    
+                <!-- Form -->
+                <div id="breakFormContainer">
+                    <form id="breakForm">
+                        <div id="formHeading">Enter Shift</div>
+                        <div class="row">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend setWidth">
+                                    <span class="input-group-text labelBorderFix" id="basic-addon1">Initial</span>
                                 </div>
-                                <div class="row">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend setWidth">
-                                            <span class="input-group-text labelBorderFix" id="basic-addon1">First 10</span>
-                                        </div>
-                                        <input type="datetime-local" id="firstTen" name="firstTen" class="form-control">
-                                    </div>    
+                                <input id="repInitial" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend setWidth">
+                                    <span class="input-group-text labelBorderFix" id="basic-addon1">First 10</span>
                                 </div>
-                                <div class="row">
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend setWidth">
-                                                <span class="input-group-text labelBorderFix" id="basic-addon1">Thirty</span>
-                                            </div>
-                                            <input type="datetime-local" id="thirty" name="thirty" class="form-control">
-                                        </div>    
+                                <input type="datetime-local" id="firstTen" name="firstTen" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend setWidth">
+                                    <span class="input-group-text labelBorderFix" id="basic-addon1">Thirty</span>
                                 </div>
-                                <div class="row">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend setWidth">
-                                            <span class="input-group-text labelBorderFix" id="basic-addon1">Second Ten</span>
-                                        </div>
-                                        <input type="datetime-local" id="secondTen" name="secondTen" class="form-control">
-                                    </div>    
+                                <input type="datetime-local" id="thirty" name="thirty" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend setWidth">
+                                    <span class="input-group-text labelBorderFix" id="basic-addon1">Second Ten</span>
                                 </div>
-                                <div class="row">
-                                    <input type="submit" value="Submit" id="submitButton" class="btn btn-primary">
-                                </div>     
-                            
-                        </form>
-                    </div>
-                </div
-                <div class="row">
-                    <div class="col"  id="breaksTableContainer">
-                        <table id="breaksTable">
-                            <thead>
-                                <tr>
-                                    <th scope="col">CX Rep</th>
-                                    <th scope="col">First 10</th>
-                                    <th scope="col">Thirty</th>
-                                    <th scope="col">Second 10</th>
-                                    <th scope="col"></th>
-                                </tr>
-                            </thead>
+                                <input type="datetime-local" id="secondTen" name="secondTen" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <input type="submit" value="Submit" id="submitButton" class="btn btn-primary">
+                        </div>
+                    </form>
+                </div>
+    
+                <!-- Table -->
+                <div id="breaksTableContainer">
+                    <table id="breaksTable">
+                        <thead>
+                            <tr>
+                                <th scope="col">CX Rep</th>
+                                <th scope="col">First 10</th>
+                                <th scope="col">Thirty</th>
+                                <th scope="col">Second 10</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+    
+            <!-- Right Section: Timeline -->
+            <div class="col-md-8" id="timelineContainer">
+                <div id="timelineHeading">Breaks Timeline</div>
+                <div id="breakTimeline">
+                    <div class="row" id="timelineHeader">
 
-                        </table>
+                    </div>
+                    <div class="row" id="timelineBody">
+
                     </div>
                 </div>
             </div>
-            <div class="col-md-8">
-
-            </div>
         </div>
     </div>
+    
     
 
     <script src="script.js"></script>

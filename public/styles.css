@@ -1,9 +1,10 @@
+
 #breaksTableContainer {
     display: flex;
     justify-content: center;
     align-items: flex-start;
     margin-top: 1vh;
-    height: 50vh;
+    height: 60vh;
     background-color: grey;
     border-radius: 30px;
     overflow: hidden;
@@ -15,6 +16,7 @@
     border-collapse: collapse;
     border-spacing: 0; 
     text-align: center;
+    font-size: 20px;
 }
 
 #breaksTable thead {
@@ -37,7 +39,7 @@
 
 #breaksTable th, #breaksTable td {
     text-align: center;
-    padding: 0px;
+    padding: 0.5vh;
 }
 
 #breakFormContainer {
@@ -49,12 +51,11 @@
 
 #breakForm {
     margin: auto;
-    padding: 1vh;
-    padding-left: 2vw;
-    padding-right: 2vw;
+    padding: 2vw;
+    padding-top: 1vh;
     text-align: center;
     width: 100%;
-    height: 35vh;
+    height: 36vh;
     background-color: grey;
     border-radius: 30px;
 }
@@ -74,5 +75,115 @@
 
 .setWidth {
     width: 6vw;
+}
+
+#timelineContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 97vh;
+    width: 66vw;
+    margin-top: 1vh;
+    background-color: grey;
+    border-radius: 30px;
+    overflow: hidden;
+    padding: 10px;
+}
+
+#breakTimeline {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    overflow-x: auto; /* Apply scrolling to the whole container */
+}
+
+#timelineHeading {
+    font-size: 30px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+#timelineHeader {
+    display: flex;
+    width: max-content;
+    height: 10%;
+    background-color: lightgrey;
+    border-radius: 10px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    padding: 5px;
+    margin: 0;
+}
+
+.timelineColHead {
+    width: 120px; /* Adjust width for header columns */
+    text-align: center;
+    border-right: 1px solid #ccc;
+    flex-shrink: 0;
+    padding: 5px;
+    background-color: darkgrey;
+}
+
+#timelineBody {
+    display: flex;
+    width: 3250px;
+    height: 100%;
+    background-color: lightgrey;
+    border-radius: 10px;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    padding: 5px;
+    margin: 0;
+}
+
+.timelineColumn {
+    width: 40px; /* Adjust width for header columns */
+    height: 100%;
+    text-align: center;
+    border-right: 1px solid #ccc;
+    flex-shrink: 0;
+    padding: 5px;
+    background-color: lightblue;
+}
+
+.breakBlock {
+    display: inline-block;
+    align-items: center;
+    position: relative;
+    height: 60px; /* Fixed height for break blocks */
+    background-color: rgba(0, 123, 255, 0.7); /* Light blue background */
+    border-radius: 5px;
+    color: white;
+    line-height: 30px;
+    font-size: 12px;
+    overflow: hidden;
+    left: 0;
+}
+
+.timelineColumn:nth-child(1) {
+    padding-left: 10px; /* Adjust padding for left alignment */
+}
+
+.timelineColumn:last-child {
+    padding-right: 10px; /* Adjust padding for rightmost column */
+}
+
+/* Apply scrollbar styling to the whole breakTimeline */
+#breakTimeline::-webkit-scrollbar {
+    height: 8px;
+    background: #ccc;
+    border-radius: 10px;
+}
+
+#breakTimeline::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+#breakTimeline::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
