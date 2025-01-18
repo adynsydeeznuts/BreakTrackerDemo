@@ -20,6 +20,7 @@ const addBreak = async (event: Event) => {
     if (response.ok) {
         console.log('Break added successfully!');
         displayBreaks();
+        displayTimeline();
     } else {
         console.error('Failed to add break');
     }
@@ -35,6 +36,7 @@ const removeBreak = async (rowNumber : number) => {
     if (response.ok) {
         console.log('Break deleted successfully!');
         displayBreaks();
+        displayTimeline();
     } else {
         console.error('Failed to delete break');
     }
@@ -95,6 +97,14 @@ const displayTimeline = async () => {
     const tenIntervals = (endTime - startTime) * 60 / 10;
     const totalMinutes = (endTime - startTime) * 60;
 
+    for (let i = timeline!.children.length - 1; i >= 0; i--) {
+        timeline?.removeChild(timeline.children[i]);
+    }
+
+    for (let i = timelineHeader!.children.length - 1; i >= 0; i--) {
+        timelineHeader?.removeChild(timelineHeader.children[i]);
+    }
+
     // for(let i=0; i < tenIntervals; i++) {
     //     const col = document.createElement('div');
     //     col.className = "timelineColumn";
@@ -103,25 +113,23 @@ const displayTimeline = async () => {
 
     for(let time = startTime; time < endTime; time += 0.5) {
         const colHead = document.createElement('div');
+        const colHeadTxt = document.createElement('div');
         colHead.className = "timelineColHead";
-
         const hours = Math.floor(time);
         const minutes = time % 1 === 0.5 ? 30 : 0;
-        const formattedTime = `${hours % 12 || 12}:${minutes.toString().padStart(2, "0")}${hours >= 12 ? "PM" : "AM"}`
-        colHead.textContent = formattedTime;
+        const suffix = (hours < 12 || hours >= 24) ? "AM" : "PM";
+        const formattedTime = `${hours % 12 || 12}:${minutes.toString().padStart(2, "0")}${suffix}`
+        colHeadTxt.textContent = formattedTime;
+        colHeadTxt.className = 'timeHeading';
+        colHead.appendChild(colHeadTxt);
         timelineHeader?.appendChild(colHead);
     }
 
     const breaks = await fetchBreaks();
     let cumulativeWidth = 0;
-    breaks.forEach((breakData: any) => {
+    breaks.forEach((breakData: any, index: number) => {
         const addBreakToTimeline = (startTimeStr: string, duration: number) => {
-            const startTime = new Date(startTimeStr);
-            const timelineStartHour = 11;
-            const minutesFromStart =
-                (startTime.getHours() - timelineStartHour) * 60 +
-                startTime.getMinutes();
-
+            const minutesFromStart = calculateMinutesFromStart(startTimeStr);                
             const breakWidth = (duration / totalMinutes) * 100;
 
             const block = document.createElement('div');
@@ -131,7 +139,10 @@ const displayTimeline = async () => {
             cumulativeWidth += breakWidth;
 
             block.style.width = `${breakWidth}%`;
+            block.style.top = `${65 * index}px`;
             block.textContent = `${breakData[1]} - ${duration}`;
+
+
 
             timeline?.appendChild(block);
         };
@@ -142,6 +153,17 @@ const displayTimeline = async () => {
         if (breakData[4]) addBreakToTimeline(breakData[4], 10);
     });
     
+}
+
+const calculateMinutesFromStart = (startTimeStr: string) => {
+    const startTime = new Date(startTimeStr);
+    const timelineStartHour = 11;
+    const minutesFromStart = (startTime.getHours() != 0) ? 
+    (startTime.getHours() - timelineStartHour) * 60 +
+        startTime.getMinutes()
+    : (24 - timelineStartHour) * 60 + startTime.getMinutes();
+    
+    return minutesFromStart;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
