@@ -94,12 +94,8 @@
     border-color: #df6400;
 }
 
-.btn-primary:active:hover{
-    background-color: #cc5c00;
-    border-color: #cc5c00;
-}
-
-.btn-primary:active{
+.btn-primary:active, .btn-primary:active:hover, 
+.btn-primary:active:focus {
     background-color: #cc5c00;
     border-color: #cc5c00;
 }
