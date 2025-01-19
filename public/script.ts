@@ -1,9 +1,11 @@
+//Method to request break list from breaks.xlsx
 const fetchBreaks = async () => {
     const response= await fetch('/api/breaks');
     const breaks = await response.json();
     return breaks;
 };
 
+//Method to add a row of breaks to breaks.xlsx
 const addBreak = async (event: Event) => {
     event.preventDefault();
     const initial = (document.getElementById('repInitial') as HTMLInputElement).value;
@@ -26,6 +28,7 @@ const addBreak = async (event: Event) => {
     }
 };
 
+//Method to remove row of breaks from breaks.xlsx
 const removeBreak = async (rowNumber : number) => {
     const response = await fetch('/api/breaks/delete', {
         method: 'DELETE',
@@ -42,6 +45,7 @@ const removeBreak = async (rowNumber : number) => {
     }
 }
 
+//Method to refresh the breaks table
 const displayBreaks = async () => {
     const breaksTable = document.getElementById('breaksTable') as  HTMLTableElement; 
     const breaksTableBody = document.createElement('tbody');
@@ -49,11 +53,12 @@ const displayBreaks = async () => {
     const breaks = await fetchBreaks();
     const data: string[] = breaks.slice(0);
 
+    //clear the DOM elements within the table 
     const oldTbody = breaksTable.querySelector('tbody');
     if (oldTbody) {
         breaksTable.removeChild(oldTbody);
     }
-
+    //then add them again
     data.forEach((element: any, index : number) => {
         const row = document.createElement('tr')
 
@@ -78,7 +83,6 @@ const displayBreaks = async () => {
         });
         cell5.appendChild(deleteButton);
 
-
         row.appendChild(cell1);
         row.appendChild(cell2);
         row.appendChild(cell3);
@@ -90,6 +94,7 @@ const displayBreaks = async () => {
     breaksTable?.appendChild(breaksTableBody);
 }
 
+//method to refresh the breaks timeline
 const displayTimeline = async () => {
     const timeline = document.getElementById('timelineBody');
     const timelineHeader = document.getElementById('timelineHeader');
@@ -97,6 +102,7 @@ const displayTimeline = async () => {
     const tenIntervals = (endTime - startTime) * 60 / 10;
     const totalMinutes = (endTime - startTime) * 60;
 
+    //remove the break blocks and the time headings
     for (let i = timeline!.children.length - 1; i >= 0; i--) {
         timeline?.removeChild(timeline.children[i]);
     }
@@ -105,12 +111,7 @@ const displayTimeline = async () => {
         timelineHeader?.removeChild(timelineHeader.children[i]);
     }
 
-    // for(let i=0; i < tenIntervals; i++) {
-    //     const col = document.createElement('div');
-    //     col.className = "timelineColumn";
-    //     timeline?.appendChild(col);
-    // }
-
+    //generate the time columns/headings
     for(let time = startTime; time < endTime; time += 0.5) {
         const colHead = document.createElement('div');
         const colHeadTxt = document.createElement('div');
@@ -124,9 +125,10 @@ const displayTimeline = async () => {
         colHead.appendChild(colHeadTxt);
         timelineHeader?.appendChild(colHead);
     }
-
+    
     const breaks = await fetchBreaks();
     let cumulativeWidth = 0;
+    //generate a block on the timeline for each break
     breaks.forEach((breakData: any, index: number) => {
         const addBreakToTimeline = (startTimeStr: string, duration: number) => {
             const minutesFromStart = calculateMinutesFromStart(startTimeStr);                
@@ -135,14 +137,14 @@ const displayTimeline = async () => {
             const block = document.createElement('div');
             block.className = 'breakBlock';
 
+            //position the break blocks based on their time from the start
+            //then adjust their poisition again to negate extra space from the DOM layout
             block.style.left = `${(minutesFromStart / totalMinutes) * 100 - cumulativeWidth}%`
             cumulativeWidth += breakWidth;
 
             block.style.width = `${breakWidth}%`;
             block.style.top = `${65 * index}px`;
             block.textContent = `${breakData[1]} - ${duration}`;
-
-
 
             timeline?.appendChild(block);
         };
@@ -166,6 +168,7 @@ const calculateMinutesFromStart = (startTimeStr: string) => {
     return minutesFromStart;
 }
 
+//call the display functions when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     displayBreaks();
     displayTimeline();

@@ -193,19 +193,12 @@
     height: 65px;
     background-color: #ff7300;
     border-radius: 5px;
+    border-bottom: 3px solid #333;
     color: white;
     line-height: 20px;
     font-size: 12px;
     overflow: hidden;
     left: 0;
-}
-
-.timelineColumn:nth-child(1) {
-    padding-left: 10px; /* Adjust padding for left alignment */
-}
-
-.timelineColumn:last-child {
-    padding-right: 10px; /* Adjust padding for rightmost column */
 }
 
 /* Apply scrollbar styling to the whole breakTimeline */
