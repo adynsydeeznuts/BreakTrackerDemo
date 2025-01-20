@@ -1,3 +1,5 @@
+import {breakBlock} from './breakBlock.js';
+
 //Method to request break list from breaks.xlsx
 const fetchBreaks = async () => {
     const response= await fetch('/api/breaks');
@@ -127,26 +129,40 @@ const displayTimeline = async () => {
     }
     
     const breaks = await fetchBreaks();
+    let breaksList : breakBlock[] = [];
     let cumulativeWidth = 0;
     //generate a block on the timeline for each break
     breaks.forEach((breakData: any, index: number) => {
         const addBreakToTimeline = (startTimeStr: string, duration: number) => {
+            const cxRep = breakData[1];
             const minutesFromStart = calculateMinutesFromStart(startTimeStr);                
             const breakWidth = (duration / totalMinutes) * 100;
+            const shiftLeft = (minutesFromStart / totalMinutes) * 100 - cumulativeWidth;
+            const block = new breakBlock(cxRep, minutesFromStart, duration, breakWidth, shiftLeft, 0, false);
 
-            const block = document.createElement('div');
-            block.className = 'breakBlock';
+            breaksList.forEach(blocki => {
+                if(blocki.overlapping == false && (block.minutesFromStart < blocki.minutesFromStart + blocki.duration && block.minutesFromStart + block.duration >= blocki.minutesFromStart) 
+                || (block.minutesFromStart + block.duration > blocki.minutesFromStart && block.minutesFromStart <= blocki.minutesFromStart + blocki.duration)) 
+                {
+                    block.newLayer();
+                    console.log(`${block.cxRep} is overlapping with ${blocki.cxRep}`)
+                }
+            });
+
+            breaksList.push(block);
+
+            const blockDiv = document.createElement('div');
+            blockDiv.className = 'breakBlock';
 
             //position the break blocks based on their time from the start
             //then adjust their poisition again to negate extra space from the DOM layout
-            block.style.left = `${(minutesFromStart / totalMinutes) * 100 - cumulativeWidth}%`
-            cumulativeWidth += breakWidth;
+            blockDiv.style.left = `${block.xPos}%`
+            cumulativeWidth += block.breakWidth;
 
-            block.style.width = `${breakWidth}%`;
-            block.style.top = `${65 * index}px`;
-            block.textContent = `${breakData[1]} - ${duration}`;
-
-            timeline?.appendChild(block);
+            blockDiv.style.width = `${block.breakWidth}%`;
+            blockDiv.style.top = `${block.yPos}px`;
+            blockDiv.textContent = `${block.cxRep} - ${duration}`;
+            timeline?.appendChild(blockDiv);
         };
 
         // Add each break
@@ -154,6 +170,8 @@ const displayTimeline = async () => {
         if (breakData[3]) addBreakToTimeline(breakData[3], 30);
         if (breakData[4]) addBreakToTimeline(breakData[4], 10);
     });
+
+    console.log(breaksList);
     
 }
 
