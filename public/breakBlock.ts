@@ -21,6 +21,8 @@ class breakBlock {
         this.yPos = 100;
         this.overlapping = true;
     }
+
+    
 }
 
 export { breakBlock };
