@@ -120,7 +120,8 @@ const displayTimeline = async () => {
             const minutesFromStart = calculateMinutesFromStart(startTimeStr);
             const breakWidth = (duration / totalMinutes) * 100;
             const shiftLeft = (minutesFromStart / totalMinutes) * 100 - cumulativeWidth;
-            const block = new breakBlock(cxRep, minutesFromStart, duration, breakWidth, shiftLeft, 0, false);
+            const colour = "";
+            const block = new breakBlock(cxRep, minutesFromStart, duration, breakWidth, shiftLeft, 0, colour, false);
             breaksList.forEach(blocki => {
                 if (blocki.overlapping == false && (block.minutesFromStart < blocki.minutesFromStart + blocki.duration && block.minutesFromStart + block.duration >= blocki.minutesFromStart)
                     || (block.minutesFromStart + block.duration > blocki.minutesFromStart && block.minutesFromStart <= blocki.minutesFromStart + blocki.duration)) {
