@@ -132,6 +132,7 @@ const displayTimeline = async () => {
             breaksList.push(block);
             const blockDiv = document.createElement('div');
             blockDiv.className = 'breakBlock';
+            blockDiv.draggable = true;
             //position the break blocks based on their time from the start
             //then adjust their poisition again to negate extra space from the DOM layout
             blockDiv.style.left = `${block.xPos}%`;
@@ -140,6 +141,15 @@ const displayTimeline = async () => {
             blockDiv.style.top = `${block.yPos}px`;
             blockDiv.style.backgroundColor = `${block.colour}`;
             blockDiv.textContent = `${block.cxRep} - ${duration}`;
+            blockDiv.addEventListener('dragstart', (e) => {
+                const eventTarget = e.target;
+                dragged = eventTarget;
+            });
+            blockDiv.addEventListener('drag', (e) => {
+                console.log('dragging');
+            });
+            blockDiv.addEventListener('dragend', (e) => {
+            });
             timeline?.appendChild(blockDiv);
         };
         // Add each break
@@ -176,7 +186,16 @@ const displayColourPicker = () => {
     });
 };
 //call the display functions when the page loads
+let dragged;
 document.addEventListener('DOMContentLoaded', () => {
+    const target = document.getElementById('timelineBody');
+    target.addEventListener('dragover', (e) => {
+        e.preventDefault();
+    }, false);
+    target.addEventListener('drop', (e) => {
+        const eventTarget = e.target;
+        eventTarget.appendChild(dragged);
+    });
     displayBreaks();
     displayTimeline();
     displayColourPicker();

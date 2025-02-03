@@ -224,6 +224,7 @@
     border-color: #ff7300;
     background-color: #444;
     -webkit-box-shadow: none;
+    box-shadow: none;
 } 
 
 .input-group-text {

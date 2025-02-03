@@ -97,6 +97,7 @@ const displayBreaks = async () => {
     breaksTable?.appendChild(breaksTableBody);
 }
 
+
 //method to refresh the breaks timeline
 const displayTimeline = async () => {
     const timeline = document.getElementById('timelineBody');
@@ -154,6 +155,7 @@ const displayTimeline = async () => {
 
             const blockDiv = document.createElement('div');
             blockDiv.className = 'breakBlock';
+            blockDiv.draggable = true;
 
             //position the break blocks based on their time from the start
             //then adjust their poisition again to negate extra space from the DOM layout
@@ -164,6 +166,18 @@ const displayTimeline = async () => {
             blockDiv.style.top = `${block.yPos}px`;
             blockDiv.style.backgroundColor = `${block.colour}`;
             blockDiv.textContent = `${block.cxRep} - ${duration}`;
+
+            blockDiv.addEventListener('dragstart', (e) => {
+                const eventTarget = e.target as HTMLElement;
+                dragged = eventTarget;
+            });
+            blockDiv.addEventListener('drag', (e) => {
+                console.log('dragging');
+            });
+            blockDiv.addEventListener('dragend', (e) => {
+
+            });
+
             timeline?.appendChild(blockDiv);
         };
 
@@ -205,7 +219,20 @@ const displayColourPicker = () => {
 }
 
 //call the display functions when the page loads
+let dragged: HTMLElement;
 document.addEventListener('DOMContentLoaded', () => {
+    const target = document.getElementById('timelineBody');
+    target!.addEventListener('dragover', (e) => {
+        e.preventDefault();
+    },
+    false,
+    );
+    target!.addEventListener('drop', (e) => {
+        const eventTarget = e.target as HTMLElement;
+        // note : intead of this I think it should just chang the coords of the block then run displayTimeline().
+        eventTarget!.appendChild(dragged);
+    });
+
     displayBreaks();
     displayTimeline();
     displayColourPicker();
