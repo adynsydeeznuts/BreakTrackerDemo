@@ -14,11 +14,12 @@ const addBreak = async (event: Event) => {
     const firstTen = (document.getElementById('firstTen') as HTMLInputElement).value;
     const thirty = (document.getElementById('thirty') as HTMLInputElement).value;
     const secondTen = (document.getElementById('secondTen') as HTMLInputElement).value;
+    const colour = `${document.getElementById('colourDropdown')?.style.backgroundColor}`;
 
     const response = await fetch('/api/breaks/add', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({initial, firstTen, thirty, secondTen }),
+        body: JSON.stringify({initial, firstTen, thirty, secondTen, colour}),
     });
 
     if (response.ok) {
@@ -138,7 +139,7 @@ const displayTimeline = async () => {
             const minutesFromStart = calculateMinutesFromStart(startTimeStr);                
             const breakWidth = (duration / totalMinutes) * 100;
             const shiftLeft = (minutesFromStart / totalMinutes) * 100 - cumulativeWidth;
-            const colour = "";
+            const colour = `${breakData[5]}`;
             const block = new breakBlock(cxRep, minutesFromStart, duration, breakWidth, shiftLeft, 0, colour, false);
 
             breaksList.forEach(blocki => {
@@ -146,7 +147,6 @@ const displayTimeline = async () => {
                 || (block.minutesFromStart + block.duration > blocki.minutesFromStart && block.minutesFromStart <= blocki.minutesFromStart + blocki.duration)) 
                 {
                     block.newLayer();
-                    console.log(`${block.cxRep} is overlapping with ${blocki.cxRep}`)
                 }
             });
 
@@ -162,6 +162,7 @@ const displayTimeline = async () => {
 
             blockDiv.style.width = `${block.breakWidth}%`;
             blockDiv.style.top = `${block.yPos}px`;
+            blockDiv.style.backgroundColor = `${block.colour}`;
             blockDiv.textContent = `${block.cxRep} - ${duration}`;
             timeline?.appendChild(blockDiv);
         };
@@ -170,10 +171,7 @@ const displayTimeline = async () => {
         if (breakData[2]) addBreakToTimeline(breakData[2], 10);
         if (breakData[3]) addBreakToTimeline(breakData[3], 30);
         if (breakData[4]) addBreakToTimeline(breakData[4], 10);
-    });
-
-    console.log(breaksList);
-    
+    });  
 }
 
 const calculateMinutesFromStart = (startTimeStr: string) => {
@@ -187,9 +185,29 @@ const calculateMinutesFromStart = (startTimeStr: string) => {
     return minutesFromStart;
 }
 
+const displayColourPicker = () => {
+    const colourOptions = [...document.getElementsByClassName('dropdown-item')] as HTMLOptionElement[];
+    const colourDropdown = document.getElementById('colourDropdown') as HTMLSelectElement;
+    colourDropdown!.style.backgroundColor = '#ff7300';
+
+    colourDropdown!.addEventListener('change', (event) => {
+        const selectedOption = colourDropdown!.options[colourDropdown.selectedIndex];
+        const color = selectedOption.getAttribute('data-color');
+        
+        if (color) {
+            colourDropdown!.style.backgroundColor = color;
+        }
+    });
+    
+    colourOptions.forEach(colourOption => {
+        colourOption.style.backgroundColor = `${colourOption.getAttribute('data-color')}`;
+    });
+}
+
 //call the display functions when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     displayBreaks();
     displayTimeline();
+    displayColourPicker();
     document.getElementById('breakForm')?.addEventListener('submit', addBreak);
 });

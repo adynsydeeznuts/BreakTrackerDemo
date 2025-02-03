@@ -10,9 +10,9 @@ const getBreaks = async (req, res) => {
 };
 
 const addBreak = async (req, res) => {
-    const { initial, firstTen, thirty, secondTen } = req.body;
+    const { initial, firstTen, thirty, secondTen, colour } = req.body;
     try {
-        await excelService.addBreak(initial, firstTen, thirty, secondTen);
+        await excelService.addBreak(initial, firstTen, thirty, secondTen, colour);
         res.status(201).send('Break added');
     } catch (error) {
         res.status(500).json({ error: error.message });

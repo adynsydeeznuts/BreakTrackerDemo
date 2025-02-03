@@ -14,11 +14,11 @@ const readBreaks = async () => {
     return breaks;
 };
 
-const addBreak = async (initial, firstTen, thirty, secondTen) => {
+const addBreak = async (initial, firstTen, thirty, secondTen, colour) => {
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.readFile(filePath);
     const worksheet = workbook.getWorksheet('Sheet1');
-    worksheet.addRow([initial, firstTen, thirty, secondTen]);
+    worksheet.addRow([initial, firstTen, thirty, secondTen, colour]);
     await workbook.xlsx.writeFile(filePath);
 };
 

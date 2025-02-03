@@ -237,4 +237,12 @@
     -webkit-box-shadow: none;
 }
 
+#colourDropdown {
+    color: white;
+    border-color: #555;
+    background-color: #4b4b4b;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+
 
