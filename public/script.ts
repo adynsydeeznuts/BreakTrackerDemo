@@ -50,13 +50,13 @@ const removeBreak = async (rowNumber : number) => {
 
 //Method to refresh the breaks table
 const displayBreaks = async () => {
-    const breaksTable = document.getElementById('breaksTable') as  HTMLTableElement; 
+    const breaksTable = document.getElementById('breaksTable') as  HTMLTableElement;
     const breaksTableBody = document.createElement('tbody');
 
     const breaks = await fetchBreaks();
     const data: string[] = breaks.slice(0);
 
-    //clear the DOM elements within the table 
+    //clear the DOM elements within the table
     const oldTbody = breaksTable.querySelector('tbody');
     if (oldTbody) {
         breaksTable.removeChild(oldTbody);
@@ -129,7 +129,7 @@ const displayTimeline = async () => {
         colHead.appendChild(colHeadTxt);
         timelineHeader?.appendChild(colHead);
     }
-    
+
     const breaks = await fetchBreaks();
     let breaksList : breakBlock[] = [];
     let cumulativeWidth = 0;
@@ -137,15 +137,15 @@ const displayTimeline = async () => {
     breaks.forEach((breakData: any, index: number) => {
         const addBreakToTimeline = (startTimeStr: string, duration: number) => {
             const cxRep = breakData[1];
-            const minutesFromStart = calculateMinutesFromStart(startTimeStr);                
+            let minutesFromStart = calculateMinutesFromStart(startTimeStr);
             const breakWidth = (duration / totalMinutes) * 100;
-            const shiftLeft = (minutesFromStart / totalMinutes) * 100 - cumulativeWidth;
+            let shiftLeft = (minutesFromStart / totalMinutes) * 100 - cumulativeWidth;
             const colour = `${breakData[5]}`;
             const block = new breakBlock(cxRep, minutesFromStart, duration, breakWidth, shiftLeft, 0, colour, false);
 
             breaksList.forEach(blocki => {
-                if(blocki.overlapping == false && (block.minutesFromStart < blocki.minutesFromStart + blocki.duration && block.minutesFromStart + block.duration >= blocki.minutesFromStart) 
-                || (block.minutesFromStart + block.duration > blocki.minutesFromStart && block.minutesFromStart <= blocki.minutesFromStart + blocki.duration)) 
+                if(blocki.overlapping == false && (block.minutesFromStart < blocki.minutesFromStart + blocki.duration && block.minutesFromStart + block.duration >= blocki.minutesFromStart)
+                || (block.minutesFromStart + block.duration > blocki.minutesFromStart && block.minutesFromStart <= blocki.minutesFromStart + blocki.duration))
                 {
                     block.newLayer();
                 }
@@ -155,7 +155,6 @@ const displayTimeline = async () => {
 
             const blockDiv = document.createElement('div');
             blockDiv.className = 'breakBlock';
-            blockDiv.draggable = true;
 
             //position the break blocks based on their time from the start
             //then adjust their poisition again to negate extra space from the DOM layout
@@ -167,15 +166,16 @@ const displayTimeline = async () => {
             blockDiv.style.backgroundColor = `${block.colour}`;
             blockDiv.textContent = `${block.cxRep} - ${duration}`;
 
-            blockDiv.addEventListener('dragstart', (e) => {
-                const eventTarget = e.target as HTMLElement;
-                dragged = eventTarget;
-            });
-            blockDiv.addEventListener('drag', (e) => {
-                console.log('dragging');
-            });
-            blockDiv.addEventListener('dragend', (e) => {
+            blockDiv.addEventListener('mousedown', (e) => {
+                const rect = blockDiv.getBoundingClientRect();
+                let mouseX: number = 0;
+                onmousemove = function(e){ mouseX = e.clientX;}
 
+                console.log(rect.left);
+                while(rect.right - rect.left > mouseX) {
+                    minutesFromStart
+                    shiftLeft = (minutesFromStart / totalMinutes) * 100 - cumulativeWidth;
+                }
             });
 
             timeline?.appendChild(blockDiv);
@@ -185,18 +185,27 @@ const displayTimeline = async () => {
         if (breakData[2]) addBreakToTimeline(breakData[2], 10);
         if (breakData[3]) addBreakToTimeline(breakData[3], 30);
         if (breakData[4]) addBreakToTimeline(breakData[4], 10);
-    });  
+    });
 }
 
 const calculateMinutesFromStart = (startTimeStr: string) => {
     const startTime = new Date(startTimeStr);
     const timelineStartHour = 11;
-    const minutesFromStart = (startTime.getHours() != 0) ? 
+    const minutesFromStart = (startTime.getHours() != 0) ?
     (startTime.getHours() - timelineStartHour) * 60 +
         startTime.getMinutes()
     : (24 - timelineStartHour) * 60 + startTime.getMinutes();
-    
+
     return minutesFromStart;
+}
+
+const getDateFromMinutes = (minutesFromStart: number) => {
+    const minutesStart = minutesFromStart;
+    const hours = minutesStart/60;
+    const minutesFinal = (hours - Math.floor(hours)) * 60;
+    const dateTime = `2000/01/01T${hours}:${minutesFinal}`;
+
+    return dateTime;   
 }
 
 const displayColourPicker = () => {
@@ -207,32 +216,20 @@ const displayColourPicker = () => {
     colourDropdown!.addEventListener('change', (event) => {
         const selectedOption = colourDropdown!.options[colourDropdown.selectedIndex];
         const color = selectedOption.getAttribute('data-color');
-        
+
         if (color) {
             colourDropdown!.style.backgroundColor = color;
         }
     });
-    
+
     colourOptions.forEach(colourOption => {
         colourOption.style.backgroundColor = `${colourOption.getAttribute('data-color')}`;
     });
 }
 
-//call the display functions when the page loads
-let dragged: HTMLElement;
-document.addEventListener('DOMContentLoaded', () => {
-    const target = document.getElementById('timelineBody');
-    target!.addEventListener('dragover', (e) => {
-        e.preventDefault();
-    },
-    false,
-    );
-    target!.addEventListener('drop', (e) => {
-        const eventTarget = e.target as HTMLElement;
-        // note : intead of this I think it should just chang the coords of the block then run displayTimeline().
-        eventTarget!.appendChild(dragged);
-    });
 
+//call the display functions when the page loads
+document.addEventListener('DOMContentLoaded', () => {
     displayBreaks();
     displayTimeline();
     displayColourPicker();

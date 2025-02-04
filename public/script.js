@@ -49,7 +49,7 @@ const displayBreaks = async () => {
     const breaksTableBody = document.createElement('tbody');
     const breaks = await fetchBreaks();
     const data = breaks.slice(0);
-    //clear the DOM elements within the table 
+    //clear the DOM elements within the table
     const oldTbody = breaksTable.querySelector('tbody');
     if (oldTbody) {
         breaksTable.removeChild(oldTbody);
@@ -118,9 +118,9 @@ const displayTimeline = async () => {
     breaks.forEach((breakData, index) => {
         const addBreakToTimeline = (startTimeStr, duration) => {
             const cxRep = breakData[1];
-            const minutesFromStart = calculateMinutesFromStart(startTimeStr);
+            let minutesFromStart = calculateMinutesFromStart(startTimeStr);
             const breakWidth = (duration / totalMinutes) * 100;
-            const shiftLeft = (minutesFromStart / totalMinutes) * 100 - cumulativeWidth;
+            let shiftLeft = (minutesFromStart / totalMinutes) * 100 - cumulativeWidth;
             const colour = `${breakData[5]}`;
             const block = new breakBlock(cxRep, minutesFromStart, duration, breakWidth, shiftLeft, 0, colour, false);
             breaksList.forEach(blocki => {
@@ -132,7 +132,7 @@ const displayTimeline = async () => {
             breaksList.push(block);
             const blockDiv = document.createElement('div');
             blockDiv.className = 'breakBlock';
-            blockDiv.draggable = true;
+            //blockDiv.draggable = true;
             //position the break blocks based on their time from the start
             //then adjust their poisition again to negate extra space from the DOM layout
             blockDiv.style.left = `${block.xPos}%`;
@@ -141,14 +141,25 @@ const displayTimeline = async () => {
             blockDiv.style.top = `${block.yPos}px`;
             blockDiv.style.backgroundColor = `${block.colour}`;
             blockDiv.textContent = `${block.cxRep} - ${duration}`;
-            blockDiv.addEventListener('dragstart', (e) => {
-                const eventTarget = e.target;
-                dragged = eventTarget;
-            });
-            blockDiv.addEventListener('drag', (e) => {
-                console.log('dragging');
-            });
-            blockDiv.addEventListener('dragend', (e) => {
+            // blockDiv.addEventListener('dragstart', (e) => {
+            //     const eventTarget = e.target as HTMLElement;
+            //     dragged = eventTarget;
+            // });
+            // blockDiv.addEventListener('drag', (e) => {
+            //     console.log('dragging');
+            //     dragging = true;
+            // });
+            // blockDiv.addEventListener('dragend', (e) => {
+            // });
+            blockDiv.addEventListener('mousehold', (e) => {
+                const rect = blockDiv.getBoundingClientRect();
+                let mouseX = 0;
+                onmousemove = function (e) { mouseX = e.clientX; };
+                console.log(rect.left);
+                while (rect.right - rect.left > mouseX) {
+                    minutesFromStart;
+                    shiftLeft = (minutesFromStart / totalMinutes) * 100 - cumulativeWidth;
+                }
             });
             timeline?.appendChild(blockDiv);
         };
@@ -170,6 +181,13 @@ const calculateMinutesFromStart = (startTimeStr) => {
         : (24 - timelineStartHour) * 60 + startTime.getMinutes();
     return minutesFromStart;
 };
+const getDateFromMinutes = (minutesFromStart) => {
+    const minutesStart = minutesFromStart;
+    const hours = minutesStart / 60;
+    const minutesFinal = (hours - Math.floor(hours)) * 60;
+    const dateTime = `2000/01/01T${hours}:${minutesFinal}`;
+    return dateTime;
+};
 const displayColourPicker = () => {
     const colourOptions = [...document.getElementsByClassName('dropdown-item')];
     const colourDropdown = document.getElementById('colourDropdown');
@@ -186,16 +204,7 @@ const displayColourPicker = () => {
     });
 };
 //call the display functions when the page loads
-let dragged;
 document.addEventListener('DOMContentLoaded', () => {
-    const target = document.getElementById('timelineBody');
-    target.addEventListener('dragover', (e) => {
-        e.preventDefault();
-    }, false);
-    target.addEventListener('drop', (e) => {
-        const eventTarget = e.target;
-        eventTarget.appendChild(dragged);
-    });
     displayBreaks();
     displayTimeline();
     displayColourPicker();
